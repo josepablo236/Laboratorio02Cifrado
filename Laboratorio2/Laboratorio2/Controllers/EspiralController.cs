@@ -65,7 +65,6 @@ namespace Laboratorio2.Controllers
             List<string> Text_archivo = new List<string>();
             using (var stream = new FileStream(path, FileMode.Open))
             {
-                
                 using (var reader = new BinaryReader(stream))
                 {
                     byteBuffer = reader.ReadBytes(bufferLength);
@@ -82,12 +81,57 @@ namespace Laboratorio2.Controllers
             {
                 for (int j = 0; j < espiral.TamañoM; j++)
                 {
-                    matriz[j, i] = textoescrito < Text_archivo.Count ? Text_archivo[textoescrito] : "*";
+                    matriz[j, i] = textoescrito < Text_archivo.Count ? Text_archivo[textoescrito] : "42";
                     textoescrito++;
                 }
             }
             string direccion = espiral.DireccionRecorrido;
-            
+
+            List<string> Text_encryption = new List<string>();
+            switch (espiral.DireccionRecorrido)
+            {
+                case "derecha":
+                    int[] limites = {espiral.TamañoM-1, espiral.TamañoN -1};
+                    int x = 0; int y = 0;
+                    while (limites[0] != 0 && limites[1] != 0)
+                    {
+                        for (int i = x; i <= limites[0]; i++)
+                        {
+                            Text_encryption.Add(matriz[i, y]);
+                        }
+                        y++;
+                        for (int i = y; i <= limites[1]; i++)
+                        {
+                            Text_encryption.Add(matriz[limites[0], i]);
+                        }
+
+                        for (int i = limites[0]-1; i >= x; i--)
+                        {
+                            Text_encryption.Add(matriz[i, limites[1]]);
+                        }
+                        
+                        for (int i = limites[1]-1; i >= y; i--)
+                        {
+                            Text_encryption.Add(matriz[x, i]);
+                        }
+                        x++; 
+                        limites[0]--; limites[1]--;
+                    }
+
+                    using (var writeStream1 = new FileStream(Server.MapPath("~/Archivo") + "/" + System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".cif", FileMode.OpenOrCreate))
+                    {
+                        using (var writer = new BinaryWriter(writeStream1))
+                        {
+                            foreach (var item in Text_encryption)
+                            {
+                                writer.Write(Convert.ToByte(item));
+                            }
+                        }
+                    }
+                    break;
+                case "izquierda":
+                    break;
+            }
         }
     }
 }
