@@ -120,20 +120,21 @@ namespace Laboratorio2.Controllers
 
         public ActionResult Descifrar(string TxtName)
         {
-            if (Path.GetExtension(TxtName) == ".cif")
+            if (Path.GetExtension(TxtName) == ".Ccif")
             {
                 string filepath = Server.MapPath("~/Archivo");
-                //Descompresion descomprimir = new Descompresion();
-                //var FileName = descomprimir.LeerArchivo(TxtName, filepath);
-                return RedirectToAction("Download", "ReadText"/*, new { TxtName = FileName }*/);
+                return RedirectToAction("ClaveDes", "Cesar", new { filename = TxtName });
             }
-            //else if (Path.GetExtension(TxtName) == ".lzw")
-            //{
-            //    string filepath = Server.MapPath("~/Archivo");
-            //    DescompresionLZW descompresionLZW = new DescompresionLZW();
-            //    descompresionLZW.LeerArchivo(TxtName, filepath);
-            //    return RedirectToAction("Download", "ReadText" /*new { TxtName = FileName }*/);
-            //}
+            else if (Path.GetExtension(TxtName) == ".Ecif")
+            {
+                string filepath = Server.MapPath("~/Archivo");
+                return RedirectToAction("Download", "ReadText" /*new { filename = TxtName }*/);
+            }
+            else if (Path.GetExtension(TxtName) == ".Zcif")
+            {
+                string filepath = Server.MapPath("~/Archivo");
+                return RedirectToAction("Download", "ReadText" /*new { filename = TxtName }*/);
+            }
             else
             {
                 Message = "No es un archivo .cif, por lo que no puede descifrarse";

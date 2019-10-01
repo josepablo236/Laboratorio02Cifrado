@@ -126,6 +126,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Cifrado\CifradoCesar.cs" />
     <Compile Include="Controllers\CesarController.cs" />
     <Compile Include="Controllers\EspiralController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
@@ -179,6 +180,7 @@
     <Content Include="Views\Zig_Zag\Clave.cshtml" />
     <Content Include="Views\Espiral\Clave.cshtml" />
     <Content Include="Views\Cesar\Clave.cshtml" />
+    <Content Include="Views\Cesar\ClaveDes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
