@@ -100,23 +100,24 @@ namespace Laboratorio2.Controllers
             {
                 case "horizontal":
 
-                    while (limites[0] != 0 && limites[1] != 0)
+                    while ((espiral.TamañoM * espiral.TamañoN) > Text_encryption.Count)
                     {
                         for (int i = x; i <= limites[0]; i++)
                         {
                             Text_encryption.Add(matriz[i, y]);
                         }
                         y++;
+                        if ((espiral.TamañoM * espiral.TamañoN) == Text_encryption.Count) { break; }
                         for (int i = y; i <= limites[1]; i++)
                         {
                             Text_encryption.Add(matriz[limites[0], i]);
                         }
-
+                        if ((espiral.TamañoM * espiral.TamañoN) == Text_encryption.Count) { break; }
                         for (int i = limites[0]-1; i >= x; i--)
                         {
                             Text_encryption.Add(matriz[i, limites[1]]);
                         }
-                        
+                        if ((espiral.TamañoM * espiral.TamañoN) == Text_encryption.Count) { break; }
                         for (int i = limites[1]-1; i >= y; i--)
                         {
                             Text_encryption.Add(matriz[x, i]);
@@ -128,28 +129,31 @@ namespace Laboratorio2.Controllers
 
                 case "vertical":
 
-                    while (x != limites[0] && limites[1]-1 != y)
+                    while ((espiral.TamañoM * espiral.TamañoN)> Text_encryption.Count)
                     {
                         for (int i = y; i <= limites[1]; i++)
                         {
                             Text_encryption.Add(matriz[x, i]);
                         }
                         x++;
+                        if ((espiral.TamañoM * espiral.TamañoN) == Text_encryption.Count) { break; }
                         for (int i = x; i <= limites[0]; i++)
                         {
                             Text_encryption.Add(matriz[x, limites[1]]);
                         }
                         limites[1]--;
+                        if ((espiral.TamañoM * espiral.TamañoN) == Text_encryption.Count) { break; }
                         for (int i = limites[1]; i >= y; i--)
                         {
                             Text_encryption.Add(matriz[limites[0], i]);
                         }
                         limites[0]--;
+                        if ((espiral.TamañoM * espiral.TamañoN) == Text_encryption.Count) { break; }
                         for (int i = limites[0]; i >= x; i--)
                         {
                             Text_encryption.Add(matriz[i, y]);
                         }
-                        y++; 
+                        y++;
                     }
                     break;
             }
