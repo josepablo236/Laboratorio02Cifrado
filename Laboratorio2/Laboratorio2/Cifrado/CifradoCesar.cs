@@ -17,7 +17,7 @@ namespace Laboratorio2.Cifrado
             var abcedarioBytes = new Dictionary<int, byte>();
             var abcedarioOrdenado = new Dictionary<int, byte>();
             var textoCifrado = new List<byte>();
-            var abecedario = "abcdefghijklmnñopqrstuvwxyz";
+            var abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz";
             var i = 0;
             var j = 0;
             foreach (var item in abecedario)
@@ -52,7 +52,7 @@ namespace Laboratorio2.Cifrado
                                 byteBuffer = reader.ReadBytes(bufferLength);
                                 foreach (var item in byteBuffer)
                                 {
-                                    if (item == 32)
+                                    if (!abcedarioBytes.ContainsValue(item))
                                     {
                                         writer.Write(item);
                                         //textoCifrado.Add(item);
@@ -78,7 +78,7 @@ namespace Laboratorio2.Cifrado
             var abcedarioBytes = new Dictionary<int, byte>();
             var abcedarioOrdenado = new Dictionary<int, byte>();
             var textoCifrado = new List<byte>();
-            var abecedario = "abcdefghijklmnñopqrstuvwxyz";
+            var abecedario = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz";
             var i = 0;
             var j = 0;
             foreach (var item in abecedario)
@@ -113,7 +113,7 @@ namespace Laboratorio2.Cifrado
                                 byteBuffer = reader.ReadBytes(bufferLength);
                                 foreach (var item in byteBuffer)
                                 {
-                                    if (item == 32)
+                                    if (!abcedarioBytes.ContainsValue(item))
                                     {
                                         writer.Write(item);
                                     }
