@@ -75,6 +75,12 @@ namespace Laboratorio2.Controllers
                     }
                 }
             }
+            if ((espiral.TamañoM * espiral.TamañoN) < Text_archivo.Count)
+            {
+                decimal division = Text_archivo.Count / espiral.TamañoM;
+                espiral.TamañoN = (int)Math.Ceiling(division);
+            }
+
             string[,] matriz = new string[espiral.TamañoM, espiral.TamañoN];
             int textoescrito = 0;
             for (int i = 0; i < espiral.TamañoN; i++)
@@ -85,14 +91,15 @@ namespace Laboratorio2.Controllers
                     textoescrito++;
                 }
             }
-            string direccion = espiral.DireccionRecorrido;
 
+            int[] limites = { espiral.TamañoM - 1, espiral.TamañoN - 1 };
+            int x = 0; int y = 0;
             List<string> Text_encryption = new List<string>();
+
             switch (espiral.DireccionRecorrido)
             {
-                case "derecha":
-                    int[] limites = {espiral.TamañoM-1, espiral.TamañoN -1};
-                    int x = 0; int y = 0;
+                case "horizontal":
+
                     while (limites[0] != 0 && limites[1] != 0)
                     {
                         for (int i = x; i <= limites[0]; i++)
@@ -117,20 +124,44 @@ namespace Laboratorio2.Controllers
                         x++; 
                         limites[0]--; limites[1]--;
                     }
+                    break;
 
-                    using (var writeStream1 = new FileStream(Server.MapPath("~/Archivo") + "/" + System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".cif", FileMode.OpenOrCreate))
+                case "vertical":
+
+                    while (x != limites[0] && limites[1]-1 != y)
                     {
-                        using (var writer = new BinaryWriter(writeStream1))
+                        for (int i = y; i <= limites[1]; i++)
                         {
-                            foreach (var item in Text_encryption)
-                            {
-                                writer.Write(Convert.ToByte(item));
-                            }
+                            Text_encryption.Add(matriz[x, i]);
                         }
+                        x++;
+                        for (int i = x; i <= limites[0]; i++)
+                        {
+                            Text_encryption.Add(matriz[x, limites[1]]);
+                        }
+                        limites[1]--;
+                        for (int i = limites[1]; i >= y; i--)
+                        {
+                            Text_encryption.Add(matriz[limites[0], i]);
+                        }
+                        limites[0]--;
+                        for (int i = limites[0]; i >= x; i--)
+                        {
+                            Text_encryption.Add(matriz[i, y]);
+                        }
+                        y++; 
                     }
                     break;
-                case "izquierda":
-                    break;
+            }
+            using (var writeStream1 = new FileStream(Server.MapPath("~/Archivo") + "/" + System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".cif", FileMode.OpenOrCreate))
+            {
+                using (var writer = new BinaryWriter(writeStream1))
+                {
+                    foreach (var item in Text_encryption)
+                    {
+                        writer.Write(Convert.ToByte(item));
+                    }
+                }
             }
         }
     }
