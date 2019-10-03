@@ -268,11 +268,21 @@ namespace Laboratorio2.Controllers
                     }
                     break;
             }
+            List<string> texto = new List<string>();
+            for (int i = 0; i < espiral.TamañoM; i++)
+            {
+                for (int j = 0; j < espiral.TamañoN; j++)
+                {
+                    texto.Add(matriz[i,j]);
+                }
+            }
+
+
             using (var writeStream1 = new FileStream(Server.MapPath("~/Archivo") + "/" + System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".descif", FileMode.OpenOrCreate))
             {
                 using (var writer = new BinaryWriter(writeStream1))
                 {
-                    foreach (var item in Text_encryption)
+                    foreach (var item in texto)
                     {
                         writer.Write(Convert.ToByte(item));
                     }
