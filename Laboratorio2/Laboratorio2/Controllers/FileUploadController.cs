@@ -133,7 +133,7 @@ namespace Laboratorio2.Controllers
             else if (Path.GetExtension(TxtName) == ".Zcif")
             {
                 string filepath = Server.MapPath("~/Archivo");
-                return RedirectToAction("Download", "ReadText" /*new { filename = TxtName }*/);
+                return RedirectToAction("ClaveDes", "Zig_Zag", new { filename = TxtName });
             }
             else
             {

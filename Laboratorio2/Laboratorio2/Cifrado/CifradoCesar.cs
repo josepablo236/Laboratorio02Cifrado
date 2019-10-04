@@ -74,7 +74,7 @@ namespace Laboratorio2.Cifrado
 
         public void Descifrar(string fileName, string path, string FilePath, List<byte> clave)
         {
-            var pathDes = Path.Combine(FilePath, Path.GetFileNameWithoutExtension(fileName) + "Descifrado.txt");
+            var pathDes = Path.Combine(FilePath, Path.GetFileNameWithoutExtension(fileName) + "DescifradoC.txt");
             var abcedarioBytes = new Dictionary<int, byte>();
             var abcedarioOrdenado = new Dictionary<int, byte>();
             var textoCifrado = new List<byte>();
