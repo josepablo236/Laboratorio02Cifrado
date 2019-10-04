@@ -1,6 +1,8 @@
-﻿using Laboratorio2.Models;
+﻿using Laboratorio2.Cifrado;
+using Laboratorio2.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +11,7 @@ namespace Laboratorio2.Controllers
 {
     public class Zig_ZagController : Controller
     {
+        public string FilePath = "";
         // GET: Zig_Zag
         public ActionResult Index()
         {
@@ -40,10 +43,19 @@ namespace Laboratorio2.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    var archivo = zigzag.NombreDelArchivo;
-                    var niveles = zigzag.NivelesDeSeparacion;
-                    //Mandar a llamar al metodo para cifrar
-                    return RedirectToAction(nameof(ArchivoCifrado));
+                    if(zigzag.NivelesDeSeparacion > 0)
+                    {
+                        //Mandar a llamar al metodo para cifrar
+                        var path = Path.Combine(Server.MapPath("~/Archivo"), zigzag.NombreDelArchivo);
+                        FilePath = Server.MapPath("~/Archivo");
+                        CifradoZig_Zag zig = new CifradoZig_Zag();
+                        zig.Cifrar(zigzag.NombreDelArchivo, path, FilePath, zigzag.NivelesDeSeparacion);
+                        return RedirectToAction(nameof(ArchivoCifrado));
+                    }
+                    else
+                    {
+                        return View(zigzag);
+                    }
                 }
                 else
                 {
