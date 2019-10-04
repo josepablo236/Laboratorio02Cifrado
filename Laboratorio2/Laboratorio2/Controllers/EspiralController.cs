@@ -42,7 +42,7 @@ namespace Laboratorio2.Controllers
                 if (ModelState.IsValid)
                 {
                     Cifrado(espiral);
-                    return RedirectToAction("Download", "FileUpload", new { TxtName = espiral.NombreArchivo });
+                    return RedirectToAction("Download", "FileUpload", new { TxtName = System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".cif" });
                     
                 }
                 else
