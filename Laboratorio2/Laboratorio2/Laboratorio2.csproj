@@ -180,7 +180,12 @@
     <Content Include="Views\Zig_Zag\Clave.cshtml" />
     <Content Include="Views\Espiral\Clave.cshtml" />
     <Content Include="Views\Cesar\Clave.cshtml" />
+<<<<<<< Updated upstream
     <Content Include="Views\Cesar\ClaveDes.cshtml" />
+=======
+    <Content Include="Views\Zig_Zag\ClaveDes.cshtml" />
+    <Content Include="Views\Espiral\ClaveDes.cshtml" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

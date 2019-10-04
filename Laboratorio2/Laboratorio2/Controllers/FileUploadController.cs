@@ -128,7 +128,7 @@ namespace Laboratorio2.Controllers
             else if (Path.GetExtension(TxtName) == ".Ecif")
             {
                 string filepath = Server.MapPath("~/Archivo");
-                return RedirectToAction("Download", "ReadText" /*new { filename = TxtName }*/);
+                return RedirectToAction("ClaveDes", "Espiral", new { filename = TxtName });
             }
             else if (Path.GetExtension(TxtName) == ".Zcif")
             {
@@ -140,6 +140,11 @@ namespace Laboratorio2.Controllers
                 Message = "No es un archivo .cif, por lo que no puede descifrarse";
                 return RedirectToAction("Index", "FileUpload");
             }
+        }
+        public FileResult Download(string TxtName)
+        {
+            var FileVirtualPath = "Archivo/" + TxtName;
+            return File(FileVirtualPath, "application/force- download", Path.GetFileName(FileVirtualPath));
         }
     }
 }
