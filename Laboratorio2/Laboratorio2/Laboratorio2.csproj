@@ -127,6 +127,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Cifrado\CifradoCesar.cs" />
+    <Compile Include="Cifrado\CifradoZig_Zag.cs" />
     <Compile Include="Controllers\CesarController.cs" />
     <Compile Include="Controllers\EspiralController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
