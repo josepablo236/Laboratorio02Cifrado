@@ -182,6 +182,7 @@
     <Content Include="Views\Espiral\Clave.cshtml" />
     <Content Include="Views\Cesar\ClaveDes.cshtml" />
     <Content Include="Views\Cesar\Clave.cshtml" />
+    <Content Include="Views\Zig_Zag\ClaveDes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
