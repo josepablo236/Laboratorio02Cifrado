@@ -106,7 +106,7 @@ namespace Laboratorio2.Cifrado
                     var cantIntermedios = clave - 2;
                     var intermedios = 2 * (abajo);
                     var filas = new string[clave];
-                    var todoIntermedio = "";
+                    var todoIntermedio = new List<string>();
                     var byteBuffer = new char[bufferLength];
                     var x = 0;
                     var textfromfile = new List<string>();
@@ -131,19 +131,24 @@ namespace Laboratorio2.Cifrado
                     //Agarro todos los que no estan ni en la primera ni en la ultima
                     for(int i = arriba; i < textfromfile.Count - abajo; i++)
                     {
-                        todoIntermedio += textfromfile[i];
+                        todoIntermedio.Add(textfromfile[i]);
                     }
                     //Pregunto
-                    if (todoIntermedio.Length > intermedios)
+                    if (todoIntermedio.Count > intermedios)
                     {
                         //si es mayor a la cantidad max de char en los intermedios entonces divide
-                        var division = todoIntermedio.Length / cantIntermedios;
+                       // var division = todoIntermedio.Count / cantIntermedios;
                         //Aca hay que buscar una manera de separar el texto para llenar las filas
                         //Primera division:
-                        for (int i = 0; i < cantIntermedios; i++)
+                        while (todoIntermedio.Count >0)
                         {
-                            filas[clave - cantIntermedios - 1] += todoIntermedio[i];
+                            for (int i = 1; i <= clave -2; i++)
+                            {
+                                filas[i] += todoIntermedio.First();
+                                todoIntermedio.Remove(todoIntermedio.First());
+                            }
                         }
+                        
                     }
 
                     //Esto es solo para poner breakpoint y ver si los mete bien al vector

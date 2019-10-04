@@ -75,7 +75,7 @@ namespace Laboratorio2.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    Descifrar(espiral);
+                   // Descifrar(espiral);
                     return RedirectToAction("Download", "FileUpload", new { TxtName = System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".descif" });
                     
                 }
@@ -202,7 +202,7 @@ namespace Laboratorio2.Controllers
             }
         }
 
-        public void Descifrar(EspiralViewModel espiral)
+        public void Deencrypt(EspiralViewModel espiral)
         {
             var bufferLength = 750;
             var path = Path.Combine(Server.MapPath("~/Archivo"), espiral.NombreArchivo);
