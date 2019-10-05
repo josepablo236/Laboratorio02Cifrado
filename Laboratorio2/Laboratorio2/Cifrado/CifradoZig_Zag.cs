@@ -19,9 +19,6 @@ namespace Laboratorio2.Cifrado
                     var totalC = reader.BaseStream.Length;
                     double m = (2 * (Convert.ToDouble(clave)) + Convert.ToDouble(totalC) - 3) / (2 * (Convert.ToDouble(clave)) - 2);
                     var arriba = Math.Ceiling(m);
-                    //var abajo = arriba - 1;
-                    //var cantIntermedios = clave - 2;
-                    //var intermedios = 2 * (abajo);
                     var filas = new string[clave];
                     var byteBuffer = new char[bufferLength];
                     var x = 0;
@@ -73,7 +70,6 @@ namespace Laboratorio2.Cifrado
                     {
                         filas[0] += "$";
                     }
-                    //var texto = filas;
                     using (var writeStream = new FileStream(pathCif, FileMode.OpenOrCreate))
                     {
                         using (var writer = new BinaryWriter(writeStream))
@@ -100,15 +96,25 @@ namespace Laboratorio2.Cifrado
                 using (var reader = new BinaryReader(stream))
                 {
                     var totalC = reader.BaseStream.Length;
+                    var arriba = 0;
+                    var abajo = 0;
                     double m = (2 * (Convert.ToDouble(clave)) + Convert.ToDouble(totalC) - 3) / (2 * (Convert.ToDouble(clave)) - 2);
-                    var arriba = Convert.ToInt32(Math.Ceiling(m));
-                    var abajo = arriba - 1;
+                    var mRedondeada = Convert.ToInt32(Math.Round(m));
+                    if (Convert.ToDouble(mRedondeada) > m)
+                    {
+                        arriba = Convert.ToInt32(Math.Floor(m));
+                        abajo = arriba;
+                    }
+                    else
+                    {
+                        arriba = Convert.ToInt32(Math.Floor(m));
+                        abajo = arriba - 1;
+                    }
                     var cantIntermedios = clave - 2;
                     var intermedios = 2 * (abajo);
                     var filas = new string[clave];
                     var todoIntermedio = new List<string>();
                     var byteBuffer = new char[bufferLength];
-                    var x = 0;
                     var textfromfile = new List<string>();
                     while (reader.BaseStream.Position != reader.BaseStream.Length)
                     {
@@ -129,30 +135,114 @@ namespace Laboratorio2.Cifrado
                         filas[clave-1] += textfromfile[i];
                     }
                     //Agarro todos los que no estan ni en la primera ni en la ultima
-                    for(int i = arriba; i < textfromfile.Count - abajo; i++)
+                    for(int i = arriba; i < (textfromfile.Count - abajo); i++)
                     {
                         todoIntermedio.Add(textfromfile[i]);
                     }
-                    //Pregunto
-                    if (todoIntermedio.Count > intermedios)
+
+                    var division = Convert.ToDouble(todoIntermedio.Count) / Convert.ToDouble(cantIntermedios);
+                    var nivelesConUnoMas = todoIntermedio.Count % cantIntermedios;
+                    var caracteresxFila = Math.Floor(division);
+                    var cantidadUnomas = todoIntermedio.Count - (nivelesConUnoMas * caracteresxFila);
+                    var cantidadNormales = todoIntermedio.Count - cantidadUnomas;
+                    if (division > caracteresxFila)
                     {
-                        //si es mayor a la cantidad max de char en los intermedios entonces divide
-                       // var division = todoIntermedio.Count / cantIntermedios;
-                        //Aca hay que buscar una manera de separar el texto para llenar las filas
-                        //Primera division:
-                        while (todoIntermedio.Count >0)
+                        var posicionFilas = 1;
+                        var posicionIntermedios = 0;
+                        while (posicionFilas <= cantIntermedios-nivelesConUnoMas)
                         {
-                            for (int i = 1; i <= clave -2; i++)
+                            for (int i = 0; i < caracteresxFila; i++)
                             {
-                                filas[i] += todoIntermedio.First();
-                                todoIntermedio.Remove(todoIntermedio.First());
+                                filas[posicionFilas] += todoIntermedio[posicionIntermedios];
+                                posicionIntermedios++;
                             }
+                            posicionFilas++;
                         }
-                        
+                        while (posicionFilas <= cantIntermedios)
+                        {
+                            for (int i = 0; i < caracteresxFila+1; i++)
+                            {
+                                filas[posicionFilas] += todoIntermedio[posicionIntermedios];
+                                posicionIntermedios++;
+                            }
+                            posicionFilas++;
+                        }
+                    }
+                    if (division <= caracteresxFila)
+                    {
+                        var posicionFilas = 1;
+                        var posicionIntermedios = 0;
+                        while (posicionFilas <= nivelesConUnoMas)
+                        {
+                            for (int i = 0; i < caracteresxFila + 1; i++)
+                            {
+                                filas[posicionFilas] += todoIntermedio[posicionIntermedios];
+                                posicionIntermedios++;
+                            }
+                            posicionFilas++;
+                        }
+                        while(posicionFilas <= cantIntermedios)
+                        {
+                            for (int i = 0; i < caracteresxFila; i++)
+                            {
+                                filas[posicionFilas] += todoIntermedio[posicionIntermedios];
+                                posicionIntermedios++;
+                            }
+                            posicionFilas++;
+                        }
+                    }
+                    var x = 0;
+                    var textoDescifrado = new List<string>();
+
+                    while (textoDescifrado.Count < textfromfile.Count)
+                    {
+                        if (x == 0)
+                        {
+                            for (int i = 0; i < clave; i++)
+                            {
+                                if (textoDescifrado.Count == textfromfile.Count)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    textoDescifrado.Add(filas[i].First().ToString());
+                                    filas[i] = filas[i].Substring(1);
+                                }
+                            }
+                            x = clave;
+                        }
+                        if (x == clave)
+                        {
+                            for (int i = clave - 2; i > 0; i--)
+                            {
+                                if (textoDescifrado.Count == textfromfile.Count)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    textoDescifrado.Add(filas[i].First().ToString());
+                                    filas[i] = filas[i].Substring(1);
+                                }
+                            }
+                            x = 0;
+                        }
                     }
 
-                    //Esto es solo para poner breakpoint y ver si los mete bien al vector
-                    var prueba = filas;
+                    using (var writeStream = new FileStream(pathDes, FileMode.OpenOrCreate))
+                    {
+                        using (var writer = new StreamWriter(writeStream))
+                        {
+                            foreach (var item in textoDescifrado)
+                            {
+                                if(item != "$")
+                                {
+                                    writer.Write(item);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
