@@ -20,6 +20,10 @@ namespace Laboratorio2.Controllers
         {
             return View();
         }
+        public ActionResult ArchivoDescifrado()
+        {
+            return View();
+        }
 
         // GET: Espiral/Create
         public ActionResult Clave(string fileName, string tamañoM, string tamañoN, string direccion)
@@ -42,8 +46,8 @@ namespace Laboratorio2.Controllers
                 if (ModelState.IsValid)
                 {
                     Cifrado(espiral);
-                    return RedirectToAction("Download", "FileUpload", new { TxtName = System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".Ecif" });
-                    
+                    return RedirectToAction(nameof(ArchivoCifrado));     
+
                 }
                 else
                 {
@@ -75,9 +79,9 @@ namespace Laboratorio2.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    Deencrypt(espiral);
-                    return RedirectToAction("Download", "FileUpload", new { TxtName = System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".descif" });
-                    
+
+                   Deencrypt(espiral);
+                    return RedirectToAction(nameof(ArchivoDescifrado));
                 }
                 else
                 {
@@ -86,7 +90,7 @@ namespace Laboratorio2.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(ArchivoCifrado));
+                return RedirectToAction(nameof(ArchivoDescifrado));
             }
         }
         public void Cifrado(EspiralViewModel espiral)

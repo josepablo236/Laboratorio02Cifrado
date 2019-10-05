@@ -23,6 +23,10 @@ namespace Laboratorio2.Controllers
         {
             return View();
         }
+        public ActionResult ArchivoDescifrado()
+        {
+            return View();
+        }
 
         // GET: Zig_Zag/Clave
         public ActionResult Clave(string fileName, string niveles)
@@ -96,7 +100,7 @@ namespace Laboratorio2.Controllers
                         FilePath = Server.MapPath("~/Archivo");
                         CifradoZig_Zag zig = new CifradoZig_Zag();
                         zig.Descifrar(zigzag.NombreDelArchivo, path, FilePath, zigzag.NivelesDeSeparacion);
-                        return RedirectToAction(nameof(ArchivoCifrado));
+                        return RedirectToAction(nameof(ArchivoDescifrado));
                     }
                     else
                     {
@@ -110,7 +114,7 @@ namespace Laboratorio2.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(ArchivoCifrado));
+                return RedirectToAction(nameof(ArchivoDescifrado));
             }
         }
     }
