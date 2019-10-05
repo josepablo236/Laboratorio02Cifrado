@@ -252,7 +252,7 @@ namespace Laboratorio2.Controllers
                             for (int i = x; i <= limites[0]; i++)
                             {
                                 if (text_archivocifrado.Count == 0) { break; }
-                                matriz[x, limites[1]] = text_archivocifrado.First(); 
+                                matriz[i, limites[1]] = text_archivocifrado.First(); 
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             limites[1]--;
