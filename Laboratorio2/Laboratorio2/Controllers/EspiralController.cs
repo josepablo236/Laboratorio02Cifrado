@@ -80,7 +80,7 @@ namespace Laboratorio2.Controllers
                 if (ModelState.IsValid)
                 {
 
-                   Deencrypt(espiral);
+                    Deencrypt(espiral);
                     return RedirectToAction(nameof(ArchivoDescifrado));
                 }
                 else
