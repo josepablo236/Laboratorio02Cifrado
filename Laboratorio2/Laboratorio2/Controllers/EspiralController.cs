@@ -2,8 +2,8 @@
  using System;
  using System.Collections.Generic;
  using System.IO;
-using System.Linq;
-using System.Web.Mvc;
+ using System.Linq;
+ using System.Web.Mvc;
 
 namespace Laboratorio2.Controllers
 {
@@ -46,7 +46,7 @@ namespace Laboratorio2.Controllers
                 if (ModelState.IsValid)
                 {
                     Cifrado(espiral);
-                    return RedirectToAction(nameof(ArchivoCifrado));
+                    return RedirectToAction(nameof(ArchivoCifrado));     
 
                 }
                 else
@@ -79,9 +79,9 @@ namespace Laboratorio2.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
+
                    Deencrypt(espiral);
                     return RedirectToAction(nameof(ArchivoDescifrado));
-
                 }
                 else
                 {
@@ -233,7 +233,7 @@ namespace Laboratorio2.Controllers
 
             string[,] matriz = new string[espiral.TamañoN, espiral.TamañoM];
             int x = 0; int y = 0;
-            int[] limites = { espiral.TamañoM - 1, espiral.TamañoN - 1 };
+            int[] limites = { espiral.TamañoN - 1, espiral.TamañoM - 1 };
 
             switch (espiral.DireccionRecorrido)
             {
@@ -242,31 +242,35 @@ namespace Laboratorio2.Controllers
                         {
                             for (int i = y; i <= limites[1]; i++)
                             {
-                                matriz[x, i] = text_archivocifrado.First();
+                            if (text_archivocifrado.Count == 0) { break; }
+                            matriz[x, i] = text_archivocifrado.First();
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             x++;
 
-                            if (text_archivocifrado.Count == 0) { break; }
+                            
                             for (int i = x; i <= limites[0]; i++)
                             {
+                                if (text_archivocifrado.Count == 0) { break; }
                                 matriz[x, limites[1]] = text_archivocifrado.First(); 
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             limites[1]--;
 
-                            if (text_archivocifrado.Count == 0) { break; }
+                            
                             for (int i = limites[1]; i >= y; i--)
                             {
-                                matriz[limites[0], i] = text_archivocifrado.First();
+                            if (text_archivocifrado.Count == 0) { break; }
+                            matriz[limites[0], i] = text_archivocifrado.First();
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             limites[0]--;
 
-                            if (text_archivocifrado.Count == 0) { break; }
+                            
                             for (int i = limites[0]; i >= x; i--)
                             {
-                                matriz[i, y]=  text_archivocifrado.First();
+                            if (text_archivocifrado.Count == 0) { break; }
+                            matriz[i, y]=  text_archivocifrado.First();
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             y++;
@@ -279,26 +283,31 @@ namespace Laboratorio2.Controllers
                     {
                         for (int i = x; i <= limites[0]; i++)
                         {
+                            if (text_archivocifrado.Count == 0) { break; }
                             matriz[i, y] =  text_archivocifrado.First() ;
+                            text_archivocifrado.Remove(text_archivocifrado.First());
                         }
                         y++;
-                        if (text_archivocifrado.Count == 0) { break; }
+                        
 
                         for (int i = y; i <= limites[1]; i++)
                         {
+                            if (text_archivocifrado.Count == 0) { break; }
                             matriz[limites[0], i]= text_archivocifrado.First();
+                            text_archivocifrado.Remove(text_archivocifrado.First());
                         }
-                        if (text_archivocifrado.Count == 0) { break; }
-
                         for (int i = limites[0] - 1; i >= x; i--)
                         {
+                            if (text_archivocifrado.Count == 0) { break; }
                             matriz[i, limites[1]] = text_archivocifrado.First();
+                            text_archivocifrado.Remove(text_archivocifrado.First());
                         }
-                        if (text_archivocifrado.Count == 0) { break; }
 
                         for (int i = limites[1] - 1; i >= y; i--)
                         {
+                            if (text_archivocifrado.Count == 0) { break; }
                             matriz[x, i] = text_archivocifrado.First();
+                            text_archivocifrado.Remove(text_archivocifrado.First());
                         }
                         x++;
                         limites[0]--; limites[1]--;
@@ -306,11 +315,18 @@ namespace Laboratorio2.Controllers
                     break;
             }
             List<string> texto = new List<string>();
-            for (int i = 0; i < espiral.TamañoM; i++)
+            for (int i = 0; i < espiral.TamañoN; i++)
             {
-                for (int j = 0; j < espiral.TamañoN; j++)
+                for (int j = 0; j < espiral.TamañoM; j++)
                 {
-                    texto.Add(matriz[i,j]);
+                    if (matriz[i, j] == null || matriz[i, j] =="" || matriz[i,j] =="42")
+                    {
+                    }
+                    else
+                    {
+                        texto.Add(matriz[i, j]);
+                    }
+                    
                 }
             }
 
@@ -327,6 +343,5 @@ namespace Laboratorio2.Controllers
             }
         
         }
-        
     }
 }
