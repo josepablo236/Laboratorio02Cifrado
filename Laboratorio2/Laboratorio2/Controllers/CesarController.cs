@@ -24,6 +24,11 @@ namespace Laboratorio2.Controllers
             return View();
         }
 
+        public ActionResult ArchivoDescifrado()
+        {
+            return View();
+        }
+
         // GET: Cesar/Create
         public ActionResult Clave(string fileName, string clave)
         {
@@ -108,7 +113,7 @@ namespace Laboratorio2.Controllers
                     FilePath = Server.MapPath("~/Archivo");
                     CifradoCesar cifradocesar = new CifradoCesar();
                     cifradocesar.Descifrar(cesar.NombreArchivo, path, FilePath, listaClave);
-                    return RedirectToAction(nameof(ArchivoCifrado));
+                    return RedirectToAction(nameof(ArchivoDescifrado));
                 }
                 else
                 {
@@ -117,7 +122,7 @@ namespace Laboratorio2.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(ArchivoCifrado));
+                return RedirectToAction(nameof(ArchivoDescifrado));
             }
         }
     }

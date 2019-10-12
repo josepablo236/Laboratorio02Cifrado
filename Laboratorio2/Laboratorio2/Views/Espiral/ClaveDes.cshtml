@@ -41,8 +41,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DireccionRecorrido, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DireccionRecorrido, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DireccionRecorrido, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.DireccionRecorrido, new List<SelectListItem>
+        { new SelectListItem{Text="horizontal", Value="horizontal"},
+        new SelectListItem{Text="vertical", Value="vertical"}}, "Please select")
             </div>
         </div>
 

@@ -2,8 +2,8 @@
  using System;
  using System.Collections.Generic;
  using System.IO;
-using System.Linq;
-using System.Web.Mvc;
+ using System.Linq;
+ using System.Web.Mvc;
 
 namespace Laboratorio2.Controllers
 {
@@ -17,6 +17,10 @@ namespace Laboratorio2.Controllers
 
         // GET: Espiral/Details/5
         public ActionResult ArchivoCifrado()
+        {
+            return View();
+        }
+        public ActionResult ArchivoDescifrado()
         {
             return View();
         }
@@ -42,8 +46,8 @@ namespace Laboratorio2.Controllers
                 if (ModelState.IsValid)
                 {
                     Cifrado(espiral);
-                    return RedirectToAction("Download", "FileUpload", new { TxtName = System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".cif" });
-                    
+                    return RedirectToAction(nameof(ArchivoCifrado));     
+
                 }
                 else
                 {
@@ -75,9 +79,9 @@ namespace Laboratorio2.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                   // Descifrar(espiral);
-                    return RedirectToAction("Download", "FileUpload", new { TxtName = System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".descif" });
-                    
+
+                    Deencrypt(espiral);
+                    return RedirectToAction(nameof(ArchivoDescifrado));
                 }
                 else
                 {
@@ -86,7 +90,7 @@ namespace Laboratorio2.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(ArchivoCifrado));
+                return RedirectToAction(nameof(ArchivoDescifrado));
             }
         }
         public void Cifrado(EspiralViewModel espiral)
@@ -190,7 +194,7 @@ namespace Laboratorio2.Controllers
                     }
                     break;
             }
-            using (var writeStream1 = new FileStream(Server.MapPath("~/Archivo") + "/" + System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".cif", FileMode.OpenOrCreate))
+            using (var writeStream1 = new FileStream(Server.MapPath("~/Archivo") + "/" + System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".Ecif", FileMode.OpenOrCreate))
             {
                 using (var writer = new BinaryWriter(writeStream1))
                 {
@@ -229,7 +233,7 @@ namespace Laboratorio2.Controllers
 
             string[,] matriz = new string[espiral.TamañoN, espiral.TamañoM];
             int x = 0; int y = 0;
-            int[] limites = { espiral.TamañoM - 1, espiral.TamañoN - 1 };
+            int[] limites = { espiral.TamañoN - 1, espiral.TamañoM - 1 };
 
             switch (espiral.DireccionRecorrido)
             {
@@ -238,31 +242,35 @@ namespace Laboratorio2.Controllers
                         {
                             for (int i = y; i <= limites[1]; i++)
                             {
-                                matriz[x, i] = text_archivocifrado.First();
+                            if (text_archivocifrado.Count == 0) { break; }
+                            matriz[x, i] = text_archivocifrado.First();
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             x++;
 
-                            if (text_archivocifrado.Count == 0) { break; }
+                            
                             for (int i = x; i <= limites[0]; i++)
                             {
-                                matriz[x, limites[1]] = text_archivocifrado.First(); 
+                                if (text_archivocifrado.Count == 0) { break; }
+                                matriz[i, limites[1]] = text_archivocifrado.First(); 
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             limites[1]--;
 
-                            if (text_archivocifrado.Count == 0) { break; }
+                            
                             for (int i = limites[1]; i >= y; i--)
                             {
-                                matriz[limites[0], i] = text_archivocifrado.First();
+                            if (text_archivocifrado.Count == 0) { break; }
+                            matriz[limites[0], i] = text_archivocifrado.First();
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             limites[0]--;
 
-                            if (text_archivocifrado.Count == 0) { break; }
+                            
                             for (int i = limites[0]; i >= x; i--)
                             {
-                                matriz[i, y]=  text_archivocifrado.First();
+                            if (text_archivocifrado.Count == 0) { break; }
+                            matriz[i, y]=  text_archivocifrado.First();
                                 text_archivocifrado.Remove(text_archivocifrado.First());
                             }
                             y++;
@@ -275,26 +283,31 @@ namespace Laboratorio2.Controllers
                     {
                         for (int i = x; i <= limites[0]; i++)
                         {
+                            if (text_archivocifrado.Count == 0) { break; }
                             matriz[i, y] =  text_archivocifrado.First() ;
+                            text_archivocifrado.Remove(text_archivocifrado.First());
                         }
                         y++;
-                        if (text_archivocifrado.Count == 0) { break; }
+                        
 
                         for (int i = y; i <= limites[1]; i++)
                         {
+                            if (text_archivocifrado.Count == 0) { break; }
                             matriz[limites[0], i]= text_archivocifrado.First();
+                            text_archivocifrado.Remove(text_archivocifrado.First());
                         }
-                        if (text_archivocifrado.Count == 0) { break; }
-
                         for (int i = limites[0] - 1; i >= x; i--)
                         {
+                            if (text_archivocifrado.Count == 0) { break; }
                             matriz[i, limites[1]] = text_archivocifrado.First();
+                            text_archivocifrado.Remove(text_archivocifrado.First());
                         }
-                        if (text_archivocifrado.Count == 0) { break; }
 
                         for (int i = limites[1] - 1; i >= y; i--)
                         {
+                            if (text_archivocifrado.Count == 0) { break; }
                             matriz[x, i] = text_archivocifrado.First();
+                            text_archivocifrado.Remove(text_archivocifrado.First());
                         }
                         x++;
                         limites[0]--; limites[1]--;
@@ -302,11 +315,18 @@ namespace Laboratorio2.Controllers
                     break;
             }
             List<string> texto = new List<string>();
-            for (int i = 0; i < espiral.TamañoM; i++)
+            for (int i = 0; i < espiral.TamañoN; i++)
             {
-                for (int j = 0; j < espiral.TamañoN; j++)
+                for (int j = 0; j < espiral.TamañoM; j++)
                 {
-                    texto.Add(matriz[i,j]);
+                    if (matriz[i, j] == null || matriz[i, j] =="" || matriz[i,j] =="42")
+                    {
+                    }
+                    else
+                    {
+                        texto.Add(matriz[i, j]);
+                    }
+                    
                 }
             }
 
@@ -322,129 +342,6 @@ namespace Laboratorio2.Controllers
                 }
             }
         
-        }
-        public void Descifrar(EspiralViewModel espiral)
-        {
-            var bufferLength = 750;
-            var path = Path.Combine(Server.MapPath("~/Archivo"), espiral.NombreArchivo);
-
-            var byteBuffer = new byte[320000000];
-            List<string> text_archivocifrado = new List<string>();
-            using (var stream = new FileStream(path, FileMode.Open))
-            {
-                using (var reader = new BinaryReader(stream))
-                {
-                    byteBuffer = reader.ReadBytes(bufferLength);
-
-                    foreach (var item in byteBuffer)
-                    {
-                        text_archivocifrado.Add(Convert.ToString(item));
-                    }
-                }
-            }
-            if ((espiral.TamañoM * espiral.TamañoN) < text_archivocifrado.Count)
-            {
-                decimal division = text_archivocifrado.Count / espiral.TamañoM;
-                espiral.TamañoN = (int)Math.Ceiling(division);
-            }
-
-            string[,] matriz = new string[espiral.TamañoN, espiral.TamañoM];
-            int x = 0; int y = 0;
-            int[] limites = { espiral.TamañoM - 1, espiral.TamañoN - 1 };
-
-            switch (espiral.DireccionRecorrido)
-            {
-                case "horizontal":
-                    while (text_archivocifrado.Count > 0)
-                    {
-                        for (int i = y; i <= limites[1]; i++)
-                        {
-                            matriz[x, i] = text_archivocifrado.First();
-                            text_archivocifrado.Remove(text_archivocifrado.First());
-                        }
-                        x++;
-
-                        if (text_archivocifrado.Count == 0) { break; }
-                        for (int i = x; i <= limites[0]; i++)
-                        {
-                            matriz[x, limites[1]] = text_archivocifrado.First();
-                            text_archivocifrado.Remove(text_archivocifrado.First());
-                        }
-                        limites[1]--;
-
-                        if (text_archivocifrado.Count == 0) { break; }
-                        for (int i = limites[1]; i >= y; i--)
-                        {
-                            matriz[limites[0], i] = text_archivocifrado.First();
-                            text_archivocifrado.Remove(text_archivocifrado.First());
-                        }
-                        limites[0]--;
-
-                        if (text_archivocifrado.Count == 0) { break; }
-                        for (int i = limites[0]; i >= x; i--)
-                        {
-                            matriz[i, y] = text_archivocifrado.First();
-                            text_archivocifrado.Remove(text_archivocifrado.First());
-                        }
-                        y++;
-                    }
-                    break;
-
-                case "vertical":
-
-                    while (text_archivocifrado.Count > 0)
-                    {
-                        for (int i = x; i <= limites[0]; i++)
-                        {
-                            matriz[i, y] = text_archivocifrado.First();
-                        }
-                        y++;
-                        if (text_archivocifrado.Count == 0) { break; }
-
-                        for (int i = y; i <= limites[1]; i++)
-                        {
-                            matriz[limites[0], i] = text_archivocifrado.First();
-                        }
-                        if (text_archivocifrado.Count == 0) { break; }
-
-                        for (int i = limites[0] - 1; i >= x; i--)
-                        {
-                            matriz[i, limites[1]] = text_archivocifrado.First();
-                        }
-                        if (text_archivocifrado.Count == 0) { break; }
-
-                        for (int i = limites[1] - 1; i >= y; i--)
-                        {
-                            matriz[x, i] = text_archivocifrado.First();
-                        }
-                        x++;
-                        limites[0]--; limites[1]--;
-                    }
-                    break;
-            }
-
-
-            List<string> texto = new List<string>();
-            for (int i = 0; i < espiral.TamañoM; i++)
-            {
-                for (int j = 0; j < espiral.TamañoN; j++)
-                {
-                    texto.Add(matriz[i, j]);
-                }
-            }
-
-
-            using (var writeStream1 = new FileStream(Server.MapPath("~/Archivo") + "/" + System.IO.Path.GetFileNameWithoutExtension(espiral.NombreArchivo) + ".descif", FileMode.OpenOrCreate))
-            {
-                using (var writer = new BinaryWriter(writeStream1))
-                {
-                    foreach (var item in texto)
-                    {
-                        writer.Write(Convert.ToByte(item));
-                    }
-                }
-            }
-            
         }
     }
 }
