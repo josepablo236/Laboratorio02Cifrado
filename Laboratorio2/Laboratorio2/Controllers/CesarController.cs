@@ -51,7 +51,6 @@ namespace Laboratorio2.Controllers
                         }
                         else
                         {
-                            ViewBag.Message = "File uploaded";
                             return View(cesar);
                         }
                     }

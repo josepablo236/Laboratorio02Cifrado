@@ -38,6 +38,8 @@ multipart/form-data  = tipo de objeto-->
                 <td>    </td>
                 <td>@Html.ActionLink("Cesar", "Cesar", new { TxtName = @Model[i].ToString() }) </td>
                 <td>    </td>
+                <td>@Html.ActionLink("SDES", "SDES", new { TxtName = @Model[i].ToString() }) </td>
+                <td>    </td>
                 <td>@Html.ActionLink("Descifrar", "Descifrar", new { TxtName = @Model[i].ToString() }) </td>
             </tr>
         }

@@ -118,6 +118,21 @@ namespace Laboratorio2.Controllers
 
         }
 
+        public ActionResult SDES(string TxtName)
+        {
+
+            if (Path.GetExtension(TxtName) == ".txt")
+            {
+                return RedirectToAction("Clave", "SDES", new { filename = TxtName });
+            }
+            else
+            {
+                Message = "No es un archivo comprimible";
+                return RedirectToAction("Index", "FileUpload");
+            }
+
+        }
+
         public ActionResult Descifrar(string TxtName)
         {
             if (Path.GetExtension(TxtName) == ".Ccif")
