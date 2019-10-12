@@ -150,6 +150,11 @@ namespace Laboratorio2.Controllers
                 string filepath = Server.MapPath("~/Archivo");
                 return RedirectToAction("ClaveDes", "Zig_Zag", new { filename = TxtName });
             }
+            else if (Path.GetExtension(TxtName) == ".scif")
+            {
+                string filepath = Server.MapPath("~/Archivo");
+                return RedirectToAction("ClaveDes", "SDES", new { filename = TxtName });
+            }
             else
             {
                 Message = "No es un archivo .cif, por lo que no puede descifrarse";
