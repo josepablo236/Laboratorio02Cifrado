@@ -49,46 +49,6 @@ namespace Laboratorio2.Cifrado
             }
         }
 
-        public void Descifrar(string fileName, string path, string FilePath, int numero, string pathP10, string pathP8, string pathP4, string pathIP, string pathEP)
-        {
-            var permutaciones = LeerPermutaciones(pathP10, pathP8, pathP4, pathIP, pathEP);
-            var P10 = permutaciones[0];
-            var P8 = permutaciones[1];
-            var P4 = permutaciones[2];
-            var IP = permutaciones[3];
-            var EP = permutaciones[4];
-
-            var llaves = GenerarLlaves(numero, P10, P8);
-            var llave1 = llaves[0];
-            var llave2 = llaves[1];
-
-            var pathDescif = Path.Combine(FilePath, Path.GetFileNameWithoutExtension(fileName) + ".sdescif");
-
-            using (var stream = new FileStream(path, FileMode.Open))
-            {
-                using (var reader = new BinaryReader(stream))
-                {
-                    using (var writeStream = new FileStream(pathDescif, FileMode.OpenOrCreate))
-                    {
-                        using (var writer = new BinaryWriter(writeStream))
-                        {
-                            var byteBuffer = new byte[bufferLength];
-                            while (reader.BaseStream.Position != reader.BaseStream.Length)
-                            {
-                                byteBuffer = reader.ReadBytes(bufferLength);
-                                foreach (var item in byteBuffer)
-                                {
-                                    var byteCifrado = Descifrado(item, llave1, llave2, P8, P4, IP, EP);
-                                    var enbyte = Convert.ToInt32(byteCifrado, 2);
-                                    writer.Write(Convert.ToByte(enbyte));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         public string[] LeerPermutaciones(string pathP10, string pathP8, string pathP4, string pathIP, string pathEP)
         {
             var permutaciones = new string[5];
@@ -237,80 +197,10 @@ namespace Laboratorio2.Cifrado
 
             return byteCifrado;
         }
-        public string Descifrado(int item, string llave1, string llave2, string P8, string P4, string IP, string EP)
-        {
-            string[,] S0 = new string[4, 4];
-            S0[0, 0] = "01"; S0[0, 1] = "00"; S0[0, 2] = "11"; S0[0, 3] = "10";
-            S0[1, 0] = "11"; S0[1, 1] = "10"; S0[1, 2] = "01"; S0[1, 3] = "00";
-            S0[2, 0] = "00"; S0[2, 1] = "10"; S0[2, 2] = "01"; S0[2, 3] = "11";
-            S0[3, 0] = "11"; S0[3, 1] = "01"; S0[3, 2] = "11"; S0[3, 3] = "10";
 
-            string[,] S1 = new string[4, 4];
-            S1[0, 0] = "00"; S1[0, 1] = "01"; S1[0, 2] = "10"; S1[0, 3] = "11";
-            S1[1, 0] = "10"; S1[1, 1] = "00"; S1[1, 2] = "01"; S1[1, 3] = "11";
-            S1[2, 0] = "11"; S1[2, 1] = "00"; S1[2, 2] = "01"; S1[2, 3] = "00";
-            S1[3, 0] = "10"; S1[3, 1] = "01"; S1[3, 2] = "00"; S1[3, 3] = "11";
 
-            var byteDescifrado = "";
-            //Convertir a binario
-            var plainText = Convert.ToString(item, 2);
-            plainText = plainText.PadLeft(8, '0');
-            //Hacer permutacion IP
-            var permutacionIP = PermutacionIP(IP, plainText);
-            var div1 = "";
-            var div2 = "";
-            //Agarrar los primeros 4
-            for (int i = 0; i < 4; i++)
-            {
-                div1 += permutacionIP[i];
-            }
-            //Agarrar los ultimos 4
-            for (int i = 4; i < permutacionIP.Length; i++)
-            {
-                div2 += permutacionIP[i];
-            }
-            //Hacer expandir y permutar con div2
-            var permutacionEP = PermutacionEP(EP, div2);
-            //Hacer xor con llave2
-            var xor1 = XorBins(permutacionEP, llave2).ToCharArray();
-            //Hacer SBoxes con xor1
-            var SBox0 = S0[Convert.ToInt32(xor1[0].ToString() + xor1[3].ToString(), 2), Convert.ToInt32(xor1[1].ToString() + xor1[2].ToString(), 2)];
-            var SBox1 = S1[Convert.ToInt32(xor1[4].ToString() + xor1[7].ToString(), 2), Convert.ToInt32(xor1[5].ToString() + xor1[6].ToString(), 2)];
-            var unionSboxes = SBox0 + SBox1;
-
-            //Hacer P4
-            var permutacionP4 = Permutacion4(P4, unionSboxes);
-
-            //Hacer XOR con div1 de IP
-            var xor2 = XorBins(permutacionP4, div1);
-            //Unir con div2
-            var union1 = xor2 + div2;
-            //Hacer SWAP
-            union1 = div2 + xor2;
-            //Hacer EP con xor2
-            var permutacionEP2 = PermutacionEP(EP, xor2);
-            //Hacer XOR con llave1
-            var xor3 = XorBins(permutacionEP2, llave1).ToCharArray();
-            //Dividir en dos y hacer Sboxes
-            var SBox20 = S0[Convert.ToInt32(xor3[0].ToString() + xor3[3].ToString(), 2), Convert.ToInt32(xor3[1].ToString() + xor3[2].ToString(), 2)];
-            var SBox21 = S1[Convert.ToInt32(xor3[4].ToString() + xor3[7].ToString(), 2), Convert.ToInt32(xor3[5].ToString() + xor3[6].ToString(), 2)];
-            //Unir Sboxes
-            var union2Sboxes = SBox20 + SBox21;
-
-            //Hacer P4
-            var permutacion2P4 = Permutacion4(P4, union2Sboxes);
-            //Agarrar el primero del SWAP osea div2 y hacer XOR con P4
-            var xor4 = XorBins(div2, permutacion2P4).ToCharArray();
-            //Unir xor4 con el segundo del SWAP osea xor2
-            var xor4String = new string(xor4);
-            var union3 = xor4String + xor2;
-            //Hacer IP inversa 
-            byteDescifrado = PermutacionInversa(IP, union3);
-            return byteDescifrado;
-        }
-
-    //Metodo para hacer permutacion P10
-    public string Permutacion10(string P10, string cadena)
+        //Metodo para hacer permutacion P10
+        public string Permutacion10(string P10, string cadena)
         {
             var permutacion10 = "";
             for (int i = 0; i < P10.Length; i++)

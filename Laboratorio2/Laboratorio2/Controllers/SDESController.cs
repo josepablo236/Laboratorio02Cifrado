@@ -67,6 +67,49 @@ namespace Laboratorio2.Controllers
                 return RedirectToAction(nameof(ArchivoCifrado));
             }
         }
+        // GET: SDES/Create
+        public ActionResult ClaveDes(string fileName, string numero)
+        {
+            SDESViewModel sdes = new SDESViewModel();
+            sdes.NombreArchivo = fileName;
+            sdes.Numero = Convert.ToInt32(numero);
+            return View(sdes);
+        }
+ 
+        // POST: SDES/Create
+        [HttpPost]
+        public ActionResult ClaveDes(SDESViewModel sdes)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (sdes.Numero > 0 && sdes.Numero < 1024)
+                    {
+                        //Mandar a llamar al metodo para cifrar
+                        FilePath = Server.MapPath("~/Archivo");
+                        var path = Path.Combine(Server.MapPath("~/Archivo"), sdes.NombreArchivo);
+                        var pathP10 = Path.Combine(Server.MapPath("~/Archivo"), "P10.txt");
+                        var pathP8 = Path.Combine(Server.MapPath("~/Archivo"), "P8.txt");
+                        var pathP4 = Path.Combine(Server.MapPath("~/Archivo"), "P4.txt");
+                        var pathIP = Path.Combine(Server.MapPath("~/Archivo"), "IP.txt");
+                        var pathEP = Path.Combine(Server.MapPath("~/Archivo"), "EP.txt");
+                        CifradoSDES cifSDES = new CifradoSDES();
+                        cifSDES.Descifrar(sdes.NombreArchivo, path, FilePath, sdes.Numero, pathP10, pathP8, pathP4, pathIP, pathEP);
+                        return RedirectToAction(nameof(ArchivoCifrado));
+                    }
+                    else { return View(sdes); }
+                }
+                else
+                {
+                    return View(sdes);
+                }
+            }
+            catch
+            {
+                return RedirectToAction(nameof(ArchivoCifrado));
+            }
+        }
 
         // GET: SDES/Edit/5
         public ActionResult Edit(int id)
