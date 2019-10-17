@@ -27,7 +27,10 @@ namespace Laboratorio2.Controllers
         {
             return View();
         }
-
+        public ActionResult ArchivoDescifrado()
+        {
+            return View();
+        }
         // GET: SDES/Create
         public ActionResult Clave(string fileName, string numero)
         {
