@@ -18,6 +18,10 @@ namespace Laboratorio2.Controllers
             return View();
         }
 
+        public ActionResult ArchivoDescifrado()
+        {
+            return View();
+        }
 
         public ActionResult ArchivoCifrado()
         {
@@ -49,13 +53,9 @@ namespace Laboratorio2.Controllers
                         //Mandar a llamar al metodo para cifrar
                         FilePath = Server.MapPath("~/Archivo");
                         var path = Path.Combine(Server.MapPath("~/Archivo"), sdes.NombreArchivo);
-                        var pathP10 = Path.Combine(Server.MapPath("~/Archivo"), "P10.txt");
-                        var pathP8 = Path.Combine(Server.MapPath("~/Archivo"), "P8.txt");
-                        var pathP4 = Path.Combine(Server.MapPath("~/Archivo"), "P4.txt");
-                        var pathIP = Path.Combine(Server.MapPath("~/Archivo"), "IP.txt");
-                        var pathEP = Path.Combine(Server.MapPath("~/Archivo"), "EP.txt");
+                        var pathPermutaciones = Path.Combine(Server.MapPath("~/Archivo"), "Permutaciones.txt");
                         CifradoSDES cifSDES = new CifradoSDES();
-                        cifSDES.Cifrar(sdes.NombreArchivo, path, FilePath, sdes.Numero, pathP10, pathP8, pathP4, pathIP, pathEP);
+                        cifSDES.Cifrar(sdes.NombreArchivo, path, FilePath, sdes.Numero, pathPermutaciones);
                         return RedirectToAction(nameof(ArchivoCifrado));
                     }
                     else { return View(sdes); }
@@ -92,13 +92,9 @@ namespace Laboratorio2.Controllers
                         //Mandar a llamar al metodo para cifrar
                         FilePath = Server.MapPath("~/Archivo");
                         var path = Path.Combine(Server.MapPath("~/Archivo"), sdes.NombreArchivo);
-                        var pathP10 = Path.Combine(Server.MapPath("~/Archivo"), "P10.txt");
-                        var pathP8 = Path.Combine(Server.MapPath("~/Archivo"), "P8.txt");
-                        var pathP4 = Path.Combine(Server.MapPath("~/Archivo"), "P4.txt");
-                        var pathIP = Path.Combine(Server.MapPath("~/Archivo"), "IP.txt");
-                        var pathEP = Path.Combine(Server.MapPath("~/Archivo"), "EP.txt");
+                        var pathPermutaciones = Path.Combine(Server.MapPath("~/Archivo"), "Permutaciones.txt");
                         CifradoSDES cifSDES = new CifradoSDES();
-                        cifSDES.Descifrar(sdes.NombreArchivo, path, FilePath, sdes.Numero, pathP10, pathP8, pathP4, pathIP, pathEP);
+                        cifSDES.Descifrar(sdes.NombreArchivo, path, FilePath, sdes.Numero, pathPermutaciones);
                         return RedirectToAction(nameof(ArchivoDescifrado));
                     }
                     else { return View(sdes); }
