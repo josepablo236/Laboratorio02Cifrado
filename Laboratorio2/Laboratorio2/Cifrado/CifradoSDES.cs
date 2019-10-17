@@ -9,9 +9,9 @@ namespace Laboratorio2.Cifrado
     public class CifradoSDES
     {
         const int bufferLength = 1000;
-        public void Cifrar(string fileName, string path, string FilePath, int numero, string pathP10, string pathP8, string pathP4, string pathIP, string pathEP)
+        public void Cifrar(string fileName, string path, string FilePath, int numero, string pathPermutaciones)
         {
-            var permutaciones = LeerPermutaciones(pathP10, pathP8, pathP4, pathIP, pathEP);
+            var permutaciones = LeerPermutaciones(pathPermutaciones);
             var P10 = permutaciones[0];
             var P8 = permutaciones[1];
             var P4 = permutaciones[2];
@@ -49,9 +49,9 @@ namespace Laboratorio2.Cifrado
             }
         }
 
-        public void Descifrar(string fileName, string path, string FilePath, int numero, string pathP10, string pathP8, string pathP4, string pathIP, string pathEP)
+        public void Descifrar(string fileName, string path, string FilePath, int numero, string pathPermutaciones)
         {
-            var permutaciones = LeerPermutaciones(pathP10, pathP8, pathP4, pathIP, pathEP);
+            var permutaciones = LeerPermutaciones(pathPermutaciones);
             var P10 = permutaciones[0];
             var P8 = permutaciones[1];
             var P4 = permutaciones[2];
@@ -89,40 +89,19 @@ namespace Laboratorio2.Cifrado
             }
         }
 
-        public string[] LeerPermutaciones(string pathP10, string pathP8, string pathP4, string pathIP, string pathEP)
+        public string[] LeerPermutaciones(string pathPermutaciones)
         {
             var permutaciones = new string[5];
             //Leer archivos de permutaciones
-            System.IO.StreamReader lector1 = new System.IO.StreamReader(pathP10);
-            while (!lector1.EndOfStream)
+            System.IO.StreamReader lector = new System.IO.StreamReader(pathPermutaciones);
+            var x = 0;
+            while (!lector.EndOfStream)
             {
-                permutaciones[0] = lector1.ReadLine();
+                var linea = lector.ReadLine();
+                var valores = linea.Split(Convert.ToChar("|"));
+                permutaciones[x] = valores[1];
+                x++;
             }
-            lector1.Close();
-            System.IO.StreamReader lector2 = new System.IO.StreamReader(pathP8);
-            while (!lector2.EndOfStream)
-            {
-                permutaciones[1] = lector2.ReadLine();
-            }
-            lector2.Close();
-            System.IO.StreamReader lector3 = new System.IO.StreamReader(pathP4);
-            while (!lector3.EndOfStream)
-            {
-                permutaciones[2] = lector3.ReadLine();
-            }
-            lector3.Close();
-            System.IO.StreamReader lector4 = new System.IO.StreamReader(pathIP);
-            while (!lector4.EndOfStream)
-            {
-                permutaciones[3] = lector4.ReadLine();
-            }
-            lector4.Close();
-            System.IO.StreamReader lector5 = new System.IO.StreamReader(pathEP);
-            while (!lector5.EndOfStream)
-            {
-                permutaciones[4] = lector5.ReadLine();
-            }
-            lector5.Close();
             return permutaciones;
         }
 
@@ -132,6 +111,7 @@ namespace Laboratorio2.Cifrado
             
             //Convertir a binario el numero ingresado
             var numeroBinario = Convert.ToString(numero, 2);
+            numeroBinario = numeroBinario.PadLeft(10, '0');
             //Hacer P10
             var permutacion10 = Permutacion10(P10, numeroBinario);
             var division1 = "";
