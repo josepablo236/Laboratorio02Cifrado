@@ -23,7 +23,10 @@ namespace Laboratorio2.Controllers
         {
             return View();
         }
-
+        public ActionResult ArchivoDescifrado()
+        {
+            return View();
+        }
         // GET: SDES/Create
         public ActionResult Clave(string fileName, string numero)
         {
@@ -96,7 +99,7 @@ namespace Laboratorio2.Controllers
                         var pathEP = Path.Combine(Server.MapPath("~/Archivo"), "EP.txt");
                         CifradoSDES cifSDES = new CifradoSDES();
                         cifSDES.Descifrar(sdes.NombreArchivo, path, FilePath, sdes.Numero, pathP10, pathP8, pathP4, pathIP, pathEP);
-                        return RedirectToAction(nameof(ArchivoCifrado));
+                        return RedirectToAction(nameof(ArchivoDescifrado));
                     }
                     else { return View(sdes); }
                 }
@@ -107,7 +110,7 @@ namespace Laboratorio2.Controllers
             }
             catch
             {
-                return RedirectToAction(nameof(ArchivoCifrado));
+                return RedirectToAction(nameof(ArchivoDescifrado));
             }
         }
 

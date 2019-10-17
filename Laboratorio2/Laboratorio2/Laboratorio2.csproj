@@ -197,6 +197,7 @@
     <Content Include="Views\Cesar\ArchivoDescifrado.cshtml" />
     <Content Include="Views\SDES\ArchivoCifrado.cshtml" />
     <Content Include="Views\SDES\ClaveDes.cshtml" />
+    <Content Include="Views\SDES\ArchivoDescifrado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
