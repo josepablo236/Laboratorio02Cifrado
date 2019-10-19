@@ -18,11 +18,6 @@ namespace Laboratorio2.Controllers
             return View();
         }
 
-        public ActionResult ArchivoDescifrado()
-        {
-            return View();
-        }
-
         public ActionResult ArchivoCifrado()
         {
             return View();
