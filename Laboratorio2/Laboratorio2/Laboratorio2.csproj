@@ -126,12 +126,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\RouteConfig2.cs" />
     <Compile Include="Cifrado\CifradoCesar.cs" />
+    <Compile Include="Cifrado\CifradoRSA.cs" />
     <Compile Include="Cifrado\CifradoSDES.cs" />
     <Compile Include="Cifrado\CifradoZig_Zag.cs" />
     <Compile Include="Controllers\CesarController.cs" />
     <Compile Include="Controllers\EspiralController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RSAController.cs" />
     <Compile Include="Controllers\SDESController.cs" />
     <Compile Include="Controllers\Zig_ZagController.cs" />
     <Compile Include="Global.asax.cs">
@@ -139,6 +141,7 @@
     </Compile>
     <Compile Include="Models\CesarViewModel.cs" />
     <Compile Include="Models\EspiralViewModel.cs" />
+    <Compile Include="Models\RSAViewModel.cs" />
     <Compile Include="Models\SDESViewModel.cs" />
     <Compile Include="Models\Zig_ZagViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -198,6 +201,8 @@
     <Content Include="Views\SDES\ArchivoCifrado.cshtml" />
     <Content Include="Views\SDES\ClaveDes.cshtml" />
     <Content Include="Views\SDES\ArchivoDescifrado.cshtml" />
+    <Content Include="Views\RSA\Clave.cshtml" />
+    <Content Include="Views\RSA\Cifrar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
