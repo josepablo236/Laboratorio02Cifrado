@@ -36,14 +36,15 @@ namespace Laboratorio2.Cifrado
                 tempo = (d * e) % n;
             } while (tempo != 1);
             d += n;
-            using (var writeStream1 = new FileStream(FilePath + "/"  + "Private.KEY", FileMode.OpenOrCreate))
+            //Lo deje como .K por que si lo pongo como .Key mi compu lo agarra como su fuera una presentacion de KeyNote
+            using (var writeStream1 = new FileStream(FilePath + "/"  + "Private.K", FileMode.OpenOrCreate))
                 {
                     using (var writer = new StreamWriter(writeStream1))
                     {
                          writer.Write(d.ToString() + "," + n.ToString());
                     }
                 }
-            using (var writeStream2 = new FileStream(FilePath + "/" + "Public.KEY", FileMode.OpenOrCreate))
+            using (var writeStream2 = new FileStream(FilePath + "/" + "Public.K", FileMode.OpenOrCreate))
             {
                 using (var writer2 = new StreamWriter(writeStream2))
                 {
