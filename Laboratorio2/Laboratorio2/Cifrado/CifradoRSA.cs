@@ -39,7 +39,7 @@ namespace Laboratorio2.Cifrado
                 d++;
                 tempo = (d * e) % n;
             } while (tempo != 1);
-            d += QN;
+            d += n;
             //Lo deje como .K por que si lo pongo como .Key mi compu lo agarra como su fuera una presentacion de KeyNote
             using (var writeStream1 = new FileStream(FilePath + "/"  + "Private.Key", FileMode.OpenOrCreate))
                 {
