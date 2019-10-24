@@ -32,9 +32,7 @@ namespace Laboratorio2.Cifrado
 					break;
 				}
             }
-            
-            //Calcular d
-            var d = 1;
+			var d=1;
             var tempo = 0;
             do
             {
