@@ -9,7 +9,10 @@ namespace Laboratorio2.Cifrado
     public class CifradoRSA
     {
         const int bufferLength = 1000;
-        public void GenerarLlaves(int numero1, int numero2, string FilePath)
+		public static int e;
+
+
+		public void GenerarLlaves(int numero1, int numero2, string FilePath)
         {
             var p = numero1;
             var q = numero2;
@@ -18,14 +21,16 @@ namespace Laboratorio2.Cifrado
             //Calcular Q(n)
             var QN = (p - 1) * (q - 1);
             //calcular e
-            int e = 2;int count;
-            while (e < QN)
+            int count; int count1;
+			for (var i=2; i<QN; i++)
             {
-                count = MCD(e, n);
-                if (count == 1)
-                    break;
-                else
-                    e++;
+                count = MCD(i, n);
+				count1 = MCD(i, QN);
+				if (count == 1 && count1 == 1)
+				{
+					e = i;
+					break;
+				}
             }
             
             //Calcular d
@@ -36,7 +41,7 @@ namespace Laboratorio2.Cifrado
                 d++;
                 tempo = (d * e) % n;
             } while (tempo != 1);
-            d += n;
+            d += QN;
             //Lo deje como .K por que si lo pongo como .Key mi compu lo agarra como su fuera una presentacion de KeyNote
             using (var writeStream1 = new FileStream(FilePath + "/"  + "Private.Key", FileMode.OpenOrCreate))
                 {
@@ -53,18 +58,18 @@ namespace Laboratorio2.Cifrado
                 }
             }
         }
-        public int MCD(int a, int h)
+        public int MCD(int a, int b)
         {
-            int temp=0;
-            while (temp != 1)
-            {
-                temp = a % h;
-                if (temp == 0)
-                    return h;
-                a = h;
-                h = temp;
-            }
-            return 0;
+			int res;
+			do
+			{
+				res = b;
+				b = a % b;
+				a = res;
+			}
+			while (b != 0);
+
+			return res;
         }
 
         public void LeerArchivo(string path1, string path2, string FilePath, string fileName)
