@@ -37,7 +37,7 @@ namespace Laboratorio2.Cifrado
             do
             {
                 d++;
-                tempo = (d * e) % n;
+                tempo = (d * e) % QN;
             } while (tempo != 1);
             d += n;
             //Lo deje como .K por que si lo pongo como .Key mi compu lo agarra como su fuera una presentacion de KeyNote
@@ -70,7 +70,7 @@ namespace Laboratorio2.Cifrado
 			return res;
         }
 
-        public void LeerArchivo(string path1, string path2, string FilePath, string fileName)
+        public void LeerTxt(string path1, string path2, string FilePath, string fileName)
         {
             System.IO.StreamReader lector = new System.IO.StreamReader(path2);
             var llave = 0;
@@ -100,8 +100,7 @@ namespace Laboratorio2.Cifrado
                                 foreach (var item in byteBuffer)
                                 {
                                     var byteCifrado = Cifrar(item, llave, N);
-                                    var enbyte = Convert.ToInt32(byteCifrado, 2);
-                                    writer.Write(Convert.ToByte(enbyte));
+                                    writer.Write(Convert.ToByte(byteCifrado));
                                 }
                             }
                         }
@@ -110,11 +109,50 @@ namespace Laboratorio2.Cifrado
             }
         }
 
-        public string Cifrar(int letra, int llave, int N)
+        public void LeerCifrado(string path1, string path2, string FilePath, string fileName)
+        {
+            System.IO.StreamReader lector = new System.IO.StreamReader(path2);
+            var llave = 0;
+            var N = 0;
+            while (!lector.EndOfStream)
+            {
+                var linea = lector.ReadLine();
+                var valores = linea.Split(Convert.ToChar(","));
+                llave = Convert.ToInt32(valores[0]);
+                N = Convert.ToInt32(valores[1]);
+            }
+
+            var pathCif = Path.Combine(FilePath, Path.GetFileNameWithoutExtension(fileName) + ".descif");
+
+            using (var stream = new FileStream(path1, FileMode.Open))
+            {
+                using (var reader = new BinaryReader(stream))
+                {
+                    using (var writeStream = new FileStream(pathCif, FileMode.OpenOrCreate))
+                    {
+                        using (var writer = new BinaryWriter(writeStream))
+                        {
+                            var byteBuffer = new byte[bufferLength];
+                            while (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                byteBuffer = reader.ReadBytes(bufferLength);
+                                foreach (var item in byteBuffer)
+                                {
+                                    var byteCifrado = Cifrar(item, llave, N);
+                                    writer.Write(Convert.ToByte(byteCifrado));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public int Cifrar(int letra, int llave, int N)
         {
             var c = Math.Pow(letra, llave);
             var resultado = c % N;
-            var cifrado = resultado.ToString();
+            var cifrado = Convert.ToInt32(resultado);
             return cifrado;
         }
     }
