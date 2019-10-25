@@ -78,7 +78,7 @@ namespace Laboratorio2.Controllers
 
                         FilePath = Server.MapPath("~/Archivo");
                         CifradoRSA rsa = new CifradoRSA();
-                        rsa.LeerArchivo(path1, path2, FilePath, fileName);
+                        rsa.LeerTxt(path1, path2, FilePath, fileName);
                     }
 
                 }
@@ -161,6 +161,83 @@ namespace Laboratorio2.Controllers
                     return numeroPrimo(num, divisor + 1);
                 }
             }
+        }
+
+
+        public ActionResult Descifrar()
+        {
+            //La vista que me va a mostrar todos los archivos que ya se han subido
+            return View();
+        }
+
+        //----------------------------SUBIR ARCHIVO ------------------------------------------------------------------------
+        //El metodo que mando a llamar desde el Index.cshtml al momento de presionar el submit ("Upload File")
+
+        [HttpPost]          //Recibo un archivo
+        public ActionResult Descifrar(HttpPostedFileBase file1, HttpPostedFileBase file2)
+        {
+            var path1 = "";
+            var path2 = "";
+            var fileName = "";
+            //Valido que no sea nulo y que contenga texto, ya que valido que el archivo pese.
+            if (file1 != null && file1.ContentLength > 0)
+                try
+                {
+                    //Valido que unicamente puedan cargar archivos de texto
+                    if (Path.GetExtension(file1.FileName) == ".scif")
+                    {
+                        //Me va a devolver la ruta en la que se encuentra la carpeta "Archivos" 
+                        path1 = Path.Combine(Server.MapPath("~/Archivo"),
+                                      //Toma el nombre del archivo
+                                      Path.GetFileName(file1.FileName));
+                        //Entonces path, va a ser igual a la ruta +  el nombre del archivo
+                        file1.SaveAs(path1); //Guarda el archivo en la carpeta "Archivos"
+                        ViewBag.Message = "File uploaded";
+                        fileName = file1.FileName;
+                    }
+
+                }
+                catch
+                {
+                    ViewBag.Message = "Invalid file, please upload a .txt";
+                }
+            else
+            {
+                ViewBag.Message = "Please upload a file";
+            }
+
+            //Valido que no sea nulo y que contenga texto, ya que valido que el archivo pese.
+            if (file2 != null && file2.ContentLength > 0)
+            {
+                try
+                {
+                    //Valido que unicamente puedan cargar archivos de texto
+                    if (Path.GetExtension(file2.FileName) == ".Key")
+                    {
+                        //Me va a devolver la ruta en la que se encuentra la carpeta "Archivos" 
+                        path2 = Path.Combine(Server.MapPath("~/Archivo"),
+                                      //Toma el nombre del archivo
+                                      Path.GetFileName(file2.FileName));
+                        //Entonces path, va a ser igual a la ruta +  el nombre del archivo
+                        file2.SaveAs(path2); //Guarda el archivo en la carpeta "Archivos"
+                        ViewBag.Message = "File uploaded";
+
+                        FilePath = Server.MapPath("~/Archivo");
+                        CifradoRSA rsa = new CifradoRSA();
+                        rsa.LeerCifrado(path1, path2, FilePath, fileName);
+                    }
+
+                }
+                catch
+                {
+                    ViewBag.Message = "Invalid file, please upload a .key";
+                }
+            }
+            else
+            {
+                ViewBag.Message = "Please upload a file";
+            }
+            return View();
         }
 
     }

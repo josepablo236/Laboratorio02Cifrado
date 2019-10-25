@@ -203,6 +203,7 @@
     <Content Include="Views\SDES\ArchivoDescifrado.cshtml" />
     <Content Include="Views\RSA\Clave.cshtml" />
     <Content Include="Views\RSA\Cifrar.cshtml" />
+    <Content Include="Views\RSA\Descifrar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
