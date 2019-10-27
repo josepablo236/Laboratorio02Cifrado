@@ -9,10 +9,10 @@ namespace Laboratorio2.Cifrado
     public class CifradoRSA
     {
         const int bufferLength = 1000;
-		public static int e;
+        public static int e;
 
 
-		public void GenerarLlaves(int numero1, int numero2, string FilePath)
+        public void GenerarLlaves(int numero1, int numero2, string FilePath)
         {
             var p = numero1;
             var q = numero2;
@@ -22,32 +22,28 @@ namespace Laboratorio2.Cifrado
             var QN = (p - 1) * (q - 1);
             //calcular e
             int count; int count1;
-			for (var i=2; i<QN; i++)
+            for (var i = 2; i < QN; i++)
             {
                 count = MCD(i, n);
-				count1 = MCD(i, QN);
-				if (count == 1 && count1 == 1)
-				{
-					e = i;
-					break;
-				}
-            }
-			var d=1;
-            var tempo = 0;
-            do
-            {
-                d++;
-                tempo = (d * e) % QN;
-            } while (tempo != 1);
-            d += n;
-            //Lo deje como .K por que si lo pongo como .Key mi compu lo agarra como su fuera una presentacion de KeyNote
-            using (var writeStream1 = new FileStream(FilePath + "/"  + "Private.Key", FileMode.OpenOrCreate))
+                count1 = MCD(i, QN);
+                if ( count1 == 1 && count == 1)
                 {
-                    using (var writer = new StreamWriter(writeStream1))
-                    {
-                         writer.Write(d.ToString() + "," + n.ToString());
-                    }
+                    e = i;
+                    break;
                 }
+            }
+            //Valor D
+            var d = CalcularD(QN, QN, e, 1, QN);
+
+            //Escribir llave privada
+            using (var writeStream1 = new FileStream(FilePath + "/" + "Private.Key", FileMode.OpenOrCreate))
+            {
+                using (var writer = new StreamWriter(writeStream1))
+                {
+                    writer.Write(d.ToString() + "," + n.ToString());
+                }
+            }
+            //Escribir llave publica
             using (var writeStream2 = new FileStream(FilePath + "/" + "Public.Key", FileMode.OpenOrCreate))
             {
                 using (var writer2 = new StreamWriter(writeStream2))
@@ -56,20 +52,50 @@ namespace Laboratorio2.Cifrado
                 }
             }
         }
+
+        //MCD
         public int MCD(int a, int b)
         {
-			int res;
-			do
-			{
-				res = b;
-				b = a % b;
-				a = res;
-			}
-			while (b != 0);
+            int res;
+            do
+            {
+                res = b;
+                b = a % b;
+                a = res;
+            }
+            while (b != 0);
 
-			return res;
+            return res;
         }
 
+        //Calcular d
+        public int CalcularD(int QN1, int QN2, int e, int valor, int QNOriginal)
+        {
+            var div = QN1 / e;
+            var multiplicador1 = e * div;
+            var multiplicador2 = valor * div;
+            var resultado1 = QN1 - multiplicador1;
+            var resultado2 = QN2 - multiplicador2;
+
+            if (resultado2 < 0)
+            {
+                resultado2 = QNOriginal % resultado2;
+            }
+            if (resultado1 == 1)
+            {
+                return resultado2;
+            }
+            else
+            {
+                QN1 = e;
+                e = resultado1;
+                QN2 = valor;
+                valor = resultado2;
+                return CalcularD(QN1, QN2, e, valor, QNOriginal);
+            }
+        }
+
+        //Cifrado
         public void LeerTxt(string path1, string path2, string FilePath, string fileName)
         {
             System.IO.StreamReader lector = new System.IO.StreamReader(path2);
@@ -109,6 +135,7 @@ namespace Laboratorio2.Cifrado
             }
         }
 
+        //Descifrado
         public void LeerCifrado(string path1, string path2, string FilePath, string fileName)
         {
             System.IO.StreamReader lector = new System.IO.StreamReader(path2);
@@ -139,6 +166,7 @@ namespace Laboratorio2.Cifrado
                                 foreach (var item in byteBuffer)
                                 {
                                     var byteCifrado = Cifrar(item, llave, N);
+
                                     writer.Write(Convert.ToByte(byteCifrado));
                                 }
                             }
@@ -156,5 +184,4 @@ namespace Laboratorio2.Cifrado
             return cifrado;
         }
     }
-    
 }
