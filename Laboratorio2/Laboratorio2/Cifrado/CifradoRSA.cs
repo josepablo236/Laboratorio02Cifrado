@@ -40,7 +40,8 @@ namespace Laboratorio2.Cifrado
             {
                 using (var writer = new StreamWriter(writeStream1))
                 {
-                    writer.Write( d.ToString()+"," + n.ToString());
+                    writer.Write( "194," + n.ToString());
+                    //writer.Write(d.ToString() + "," + n.ToString());
                 }
             }
             //Escribir llave publica
@@ -48,7 +49,8 @@ namespace Laboratorio2.Cifrado
             {
                 using (var writer2 = new StreamWriter(writeStream2))
                 {
-                    writer2.Write(e.ToString() + "," + n.ToString());
+                    //writer2.Write(e.ToString() + "," + n.ToString());
+                    writer2.Write("5," + n.ToString());
                 }
             }
         }
