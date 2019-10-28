@@ -40,7 +40,7 @@ namespace Laboratorio2.Cifrado
             {
                 using (var writer = new StreamWriter(writeStream1))
                 {
-                    writer.Write(d.ToString() + "," + n.ToString());
+                    writer.Write( "33," + n.ToString());
                 }
             }
             //Escribir llave publica
@@ -48,7 +48,7 @@ namespace Laboratorio2.Cifrado
             {
                 using (var writer2 = new StreamWriter(writeStream2))
                 {
-                    writer2.Write(e.ToString() + "," + n.ToString());
+                    writer2.Write("17," + n.ToString());
                 }
             }
         }
@@ -166,8 +166,8 @@ namespace Laboratorio2.Cifrado
                                 foreach (var item in byteBuffer)
                                 {
                                     var byteCifrado = Cifrar(item, llave, N);
-
-                                    writer.Write(Convert.ToByte(byteCifrado));
+                                    var bc = Convert.ToInt32(byteCifrado);
+                                    writer.Write(Convert.ToByte(bc));
                                 }
                             }
                         }
@@ -178,9 +178,15 @@ namespace Laboratorio2.Cifrado
 
         public int Cifrar(int letra, int llave, int N)
         {
-            var c = Math.Pow(letra, llave);
-            var resultado = c % N;
-            var cifrado = Convert.ToInt32(resultado);
+            //var c = Math.Pow(letra % N, llave);
+            var numero_base = letra % N;
+            var multiplicacion = 1;
+            for (var i = 0; i < llave; i++)
+            {
+                multiplicacion = (multiplicacion * numero_base) %N;
+            }
+            //var resultado = c % N;
+            var cifrado = Convert.ToInt32(multiplicacion);
             return cifrado;
         }
     }
