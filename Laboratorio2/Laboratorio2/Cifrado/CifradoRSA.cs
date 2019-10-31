@@ -19,8 +19,9 @@ namespace Laboratorio2.Cifrado
             //n
             var n = p * q;
             //Calcular Q(n)
+
             var QN = (p - 1) * (q - 1);
-            //calcular e
+            //Calcular e
             int count; int count1;
             for (var i = 2; i < QN; i++)
             {
@@ -36,7 +37,8 @@ namespace Laboratorio2.Cifrado
             var tempo = 0;
             //Valor D
             var d = CalcularD(QN, QN, e, 1, QN);
-            //Lo deje como .K por que si lo pongo como .Key mi compu lo agarra como su fuera una presentacion de KeyNote
+          
+            //Escribir llave privada
             using (var writeStream1 = new FileStream(FilePath + "/" + "Private.Key", FileMode.OpenOrCreate))
             {
                 using (var writer = new StreamWriter(writeStream1))
@@ -44,6 +46,7 @@ namespace Laboratorio2.Cifrado
                     writer.Write( e.ToString() + "," + n.ToString());
                 }
             }
+          //Escribir llave publica
             using (var writeStream2 = new FileStream(FilePath + "/" + "Public.Key", FileMode.OpenOrCreate))
             {
                 using (var writer2 = new StreamWriter(writeStream2))
@@ -77,6 +80,7 @@ namespace Laboratorio2.Cifrado
                 valor = resultado2;
                 return CalcularD(QN1, QN2, e, valor, QNOriginal);
             }
+
         }
 
         public int MCD(int a, int b)
@@ -92,7 +96,7 @@ namespace Laboratorio2.Cifrado
 
             return res;
         }
-
+        //Cifrado
         public void LeerTxt(string path1, string path2, string FilePath, string fileName)
         {
             System.IO.StreamReader lector = new System.IO.StreamReader(path2);
@@ -141,6 +145,7 @@ namespace Laboratorio2.Cifrado
             }
         }
 
+        //Descifrado
         public void LeerCifrado(string path1, string path2, string FilePath, string fileName)
         {
             System.IO.StreamReader lector = new System.IO.StreamReader(path2);
@@ -281,5 +286,4 @@ namespace Laboratorio2.Cifrado
             return cifrado;
         }
     }
-
 }
