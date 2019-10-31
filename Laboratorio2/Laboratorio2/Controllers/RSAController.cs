@@ -166,14 +166,10 @@ namespace Laboratorio2.Controllers
 
         public ActionResult Descifrar()
         {
-            //La vista que me va a mostrar todos los archivos que ya se han subido
             return View();
         }
 
-        //----------------------------SUBIR ARCHIVO ------------------------------------------------------------------------
-        //El metodo que mando a llamar desde el Index.cshtml al momento de presionar el submit ("Upload File")
-
-        [HttpPost]          //Recibo un archivo
+        [HttpPost]     
         public ActionResult Descifrar(HttpPostedFileBase file1, HttpPostedFileBase file2)
         {
             var path1 = "";
@@ -184,7 +180,7 @@ namespace Laboratorio2.Controllers
                 try
                 {
                     //Valido que unicamente puedan cargar archivos de texto
-                    if (Path.GetExtension(file1.FileName) == ".scif")
+                    if (Path.GetExtension(file1.FileName) == ".rsacif")
                     {
                         //Me va a devolver la ruta en la que se encuentra la carpeta "Archivos" 
                         path1 = Path.Combine(Server.MapPath("~/Archivo"),
@@ -199,7 +195,7 @@ namespace Laboratorio2.Controllers
                 }
                 catch
                 {
-                    ViewBag.Message = "Invalid file, please upload a .txt";
+                    ViewBag.Message = "Invalid file, please upload a .rsacif";
                 }
             else
             {
@@ -219,7 +215,7 @@ namespace Laboratorio2.Controllers
                                       //Toma el nombre del archivo
                                       Path.GetFileName(file2.FileName));
                         //Entonces path, va a ser igual a la ruta +  el nombre del archivo
-                        file2.SaveAs(path2); //Guarda el archivo en la carpeta "Archivos"
+                       // file2.SaveAs(path2); //Guarda el archivo en la carpeta "Archivos"
                         ViewBag.Message = "File uploaded";
 
                         FilePath = Server.MapPath("~/Archivo");
