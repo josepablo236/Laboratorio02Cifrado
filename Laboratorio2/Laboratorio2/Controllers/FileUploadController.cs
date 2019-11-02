@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Text;
+using Laboratorio2.Cifrado;
 
 namespace Laboratorio2.Controllers
 {
@@ -16,7 +17,9 @@ namespace Laboratorio2.Controllers
         {
             //La vista que me va a mostrar todos los archivos que ya se han subido
             var items = FilesUploaded();
+            CifradoRSA rsa = new CifradoRSA();
             return View(items);
+
         }
 
         //----------------------------SUBIR ARCHIVO ------------------------------------------------------------------------
@@ -74,8 +77,6 @@ namespace Laboratorio2.Controllers
             return filesupld;
         }
 
-        // Este lo vamos a usar luego que ya podamos descomprimir jajaja
-
         public ActionResult Zig_Zag(string TxtName)
         {
             if (Path.GetExtension(TxtName) == ".txt")
@@ -91,7 +92,6 @@ namespace Laboratorio2.Controllers
         }
         public ActionResult Espiral(string TxtName)
         {
-
             if (Path.GetExtension(TxtName) == ".txt")
             {
                 return RedirectToAction("Clave", "Espiral", new { filename = TxtName });
@@ -101,7 +101,6 @@ namespace Laboratorio2.Controllers
                 Message = "No es un archivo comprimible";
                 return RedirectToAction("Index", "FileUpload");
             }
-
         }
         public ActionResult Cesar(string TxtName)
         {

@@ -45,7 +45,7 @@ namespace Laboratorio2.Controllers
                                       //Toma el nombre del archivo
                                       Path.GetFileName(file1.FileName));
                         //Entonces path, va a ser igual a la ruta +  el nombre del archivo
-                        file1.SaveAs(path1); //Guarda el archivo en la carpeta "Archivos"
+                       // file1.SaveAs(path1); //Guarda el archivo en la carpeta "Archivos"
                         ViewBag.Message = "File uploaded";
                         fileName = file1.FileName;
                     }
@@ -124,7 +124,7 @@ namespace Laboratorio2.Controllers
                         {
                             FilePath = Server.MapPath("~/Archivo");
                             CifradoRSA RSA = new CifradoRSA();
-                            RSA.GenerarLlaves(rsa.ValorP, rsa.ValorQ, FilePath);
+                            RSA.GenerarLlaves(rsa.ValorP, rsa.ValorQ, FilePath); 
                             return RedirectToAction(nameof(Cifrar));
                         }
                         else
@@ -187,7 +187,7 @@ namespace Laboratorio2.Controllers
                                       //Toma el nombre del archivo
                                       Path.GetFileName(file1.FileName));
                         //Entonces path, va a ser igual a la ruta +  el nombre del archivo
-                        file1.SaveAs(path1); //Guarda el archivo en la carpeta "Archivos"
+                       // file1.SaveAs(path1); //Guarda el archivo en la carpeta "Archivos"
                         ViewBag.Message = "File uploaded";
                         fileName = file1.FileName;
                     }
@@ -221,6 +221,7 @@ namespace Laboratorio2.Controllers
                         FilePath = Server.MapPath("~/Archivo");
                         CifradoRSA rsa = new CifradoRSA();
                         rsa.LeerCifrado(path1, path2, FilePath, fileName);
+
                     }
 
                 }
