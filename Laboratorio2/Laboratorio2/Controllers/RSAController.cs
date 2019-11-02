@@ -133,19 +133,29 @@ namespace Laboratorio2.Controllers
                         var primo2 = numeroPrimo(rsa.ValorQ, 2);
                         if(primo1 == true && primo2 == true)
                         {
-                            FilePath = Server.MapPath("~/Archivo");
-                            CifradoRSA RSA = new CifradoRSA();
-                            RSA.GenerarLlaves(rsa.ValorP, rsa.ValorQ, FilePath); 
-                            return RedirectToAction(nameof(LlavesGeneradas));
+                            if (rsa.ValorP * rsa.ValorQ < 255)
+                            {
+                                ViewBag.Message = "Please verify the multiplication of p*q is greater than 256";
+                                return View(rsa);
+                            }
+                            else
+                            {
+                                FilePath = Server.MapPath("~/Archivo");
+                                CifradoRSA RSA = new CifradoRSA();
+                                RSA.GenerarLlaves(rsa.ValorP, rsa.ValorQ, FilePath);
+                                return RedirectToAction(nameof(LlavesGeneradas));
+                            }
                         }
                         else
                         {
+                            ViewBag.Message = "Please verify the numbers are prime";
                             return View(rsa);
                         }
                     }
                 }
                 else
                 {
+                    ViewBag.Message = "Please verify the number is greater than 0";
                     return View(rsa);
                 }
             }
