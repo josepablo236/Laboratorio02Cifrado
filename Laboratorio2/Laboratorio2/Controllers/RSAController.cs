@@ -13,7 +13,17 @@ namespace Laboratorio2.Controllers
     {
         string FilePath = "";
         // GET: RSA
-        public ActionResult Index()
+        public ActionResult ArchivoCifrado()
+        {
+            return View();
+        }
+
+        public ActionResult ArchivoDesCifrado()
+        {
+            return View();
+        }
+
+        public ActionResult LlavesGeneradas()
         {
             return View();
         }
@@ -79,6 +89,7 @@ namespace Laboratorio2.Controllers
                         FilePath = Server.MapPath("~/Archivo");
                         CifradoRSA rsa = new CifradoRSA();
                         rsa.LeerTxt(path1, path2, FilePath, fileName);
+                        return RedirectToAction(nameof(ArchivoCifrado));
                     }
 
                 }
@@ -96,7 +107,7 @@ namespace Laboratorio2.Controllers
 
 
         // GET: RSA/Create
-        public ActionResult Clave(string primo1, string primo2)
+        public ActionResult GenerarLlaves(string primo1, string primo2)
         {
             RSAViewModel rsa = new RSAViewModel();
             rsa.ValorP = Convert.ToInt32(primo1);
@@ -106,7 +117,7 @@ namespace Laboratorio2.Controllers
 
         // POST: RSA/Create
         [HttpPost]
-        public ActionResult Clave(RSAViewModel rsa)
+        public ActionResult GenerarLlaves(RSAViewModel rsa)
         {
             try
             {
@@ -125,7 +136,7 @@ namespace Laboratorio2.Controllers
                             FilePath = Server.MapPath("~/Archivo");
                             CifradoRSA RSA = new CifradoRSA();
                             RSA.GenerarLlaves(rsa.ValorP, rsa.ValorQ, FilePath); 
-                            return RedirectToAction(nameof(Cifrar));
+                            return RedirectToAction(nameof(LlavesGeneradas));
                         }
                         else
                         {
@@ -221,7 +232,7 @@ namespace Laboratorio2.Controllers
                         FilePath = Server.MapPath("~/Archivo");
                         CifradoRSA rsa = new CifradoRSA();
                         rsa.LeerCifrado(path1, path2, FilePath, fileName);
-
+                        return RedirectToAction(nameof(ArchivoDesCifrado));
                     }
 
                 }
