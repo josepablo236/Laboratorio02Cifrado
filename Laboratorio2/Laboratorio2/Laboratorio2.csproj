@@ -202,9 +202,9 @@
     <Content Include="Views\SDES\ArchivoCifrado.cshtml" />
     <Content Include="Views\SDES\ClaveDes.cshtml" />
     <Content Include="Views\SDES\ArchivoDescifrado.cshtml" />
-    <Content Include="Views\RSA\GenerarLlaves.cshtml" />
     <Content Include="Views\RSA\Cifrar.cshtml" />
     <Content Include="Views\RSA\Descifrar.cshtml" />
+    <Content Include="Views\RSA\GenerarLlaves.cshtml" />
     <Content Include="Views\RSA\ArchivoCifrado.cshtml" />
     <Content Include="Views\RSA\ArchivoDesCifrado.cshtml" />
     <Content Include="Views\RSA\LlavesGeneradas.cshtml" />
